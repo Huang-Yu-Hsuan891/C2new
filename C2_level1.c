@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-unsigned long long SEED =  312891; // have value
+unsigned long long SEED =  101; // have value
 //unsigned long long SEED = 3881111387891;
 unsigned long long RANV;
 int RANI = 0;
@@ -348,15 +348,15 @@ int main(){
                 else codearray[i] = -1;
             }
             ebn0 = ebn0s[step];
-            sigma = sqrt(1.0 / (pow(10, ebn0/10)));
-            //sigma = 0.841395;
+            //sigma = sqrt(1.0 / (pow(10, ebn0/10)));
+            sigma = 0.812831;
             for(i = 0; i < rc; i++) {
                 normal(sigma, &x, &y);
                 outp[2 * i] = codearray[2 * i] + x;
                 outp[2 * i + 1] = codearray[2 * i + 1] + y;
             }
-            ebn0 = pow(10, ebn0/10);
-            //ebn0 =1.412538;
+            //ebn0 = pow(10, ebn0/10);
+            ebn0 =1.513561;
             for(i = 0; i < Ljlen; i++) {
                 Lj[i] =4 * 0.5 * ebn0 * outp[i];     //  0.5 * 1.2544 = Es/N0
                 //if(i == 0||i == 901)printf("Lj[%d] = %.8g ; ", i, Lj[i]);
@@ -375,7 +375,7 @@ int main(){
                 }  
             }
             printf("num = %d \n",num);
-            for (k = 0; k < 100/*k < 100*/ && restart != rc; k++) {         // message passing, for predetermined threshold = 100
+            for (k = 0; k < 20/*k < 100*/ && restart != rc; k++) {         // message passing, for predetermined threshold = 100
                 restart = 0;   
                 //printf("I_eq = %d ,", k); 
                 for (i = 0; i < 11; i++) {                          // bottom-up
@@ -416,7 +416,7 @@ int main(){
                                 //printf("uij1[%d][%d]= %.7g ;",i,j,uij1[i][j]);
                                 //for (m=0; m <11;m++)printf("tempqij1[%d] = %g; ",m,tempqij1[m]);
                             //}
-                            //if (i == 0 && j == 6) printf("uij1[%d][%d] = %g;    ",i,j,uij1[i][j]);
+                            if (i == 1 && j == 8) printf("uij1[%d][%d] = %g;    ",i,j,uij1[i][j]);
                         }
                     } else {
                         for (j = 0; j < 6; j++) {
@@ -559,6 +559,15 @@ int main(){
                 for (i = 0; i < rc; i++) {
                     if (checkbit[i] == 0) restart += 1; // restart = 408 is success
                 }
+                int restart1 = 0;
+                int restart2 = 0;
+                for (i = 0; i < rc/2; i++) {
+                    if (checkbit[i] == 0) restart1 += 1; // restart = 408 is success
+                }
+                for (i = rc/2; i < rc; i++) {
+                    if (checkbit[i] == 0) restart2 += 1; // restart = 408 is success
+                }
+                printf("k = %d restart 1 2 = %d %d\n",k,restart1,restart2);
                 stp = 0;
                 if (k == 99 && restart != rc) {
                     stp = 1;
@@ -594,7 +603,7 @@ int main(){
             if(totalerror1 != 0)printf("totalerror1 = %d\n", totalerror1);
             if(totalerror2 != 0)printf("totalerror2 = %d\n", totalerror2); 
              FILE *outfp2; 
-             outfp2 = fopen("C2_LEVEL1_1_8_iteration=50.txt","a");
+             outfp2 = fopen("C2_LEVEL1_1_8_iteration=20_totalerror_vr2.txt","a");
             fprintf(outfp2,"%d ",num);
             fprintf(outfp2,"totalerror1 = %d ",totalerror1);
             fprintf(outfp2,"totalerror2 = %d ",totalerror2);
@@ -625,7 +634,7 @@ int main(){
     // open write file
     FILE *outfp;
     
-    outfp = fopen("C2_LEVEL1_1_8_iteration=100_vr2.txt","w");
+    outfp = fopen("C2_LEVEL1_1_8_iteration=20_vr2.txt","w");
     for (i = 0; i < 1; i++) {
          fprintf(outfp,"%g ",ebn0s[i]);
          fprintf(outfp,"%g ",berscompare[i]);
